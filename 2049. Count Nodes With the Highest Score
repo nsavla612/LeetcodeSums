@@ -1,0 +1,52 @@
+public class Solution {
+
+    List<int>[] children = null;
+    public long maxScore = 0;
+    public int maxScoreNodes = 0;
+
+    public int CountHighestScoreNodes(int[] parents) {
+        makeChildrenList(parents);
+        getCountHelper( 0 );
+        return maxScoreNodes;
+    }
+
+    public void makeChildrenList(int[] parents)
+    {
+        children = new List<int>[parents.Length];
+        for(int i = 0 ; i < parents.Length ; i++)
+        {
+            children[i] = new List<int>(); 
+        }  
+
+        for(int i = 1 ; i < parents.Length ; i++)
+        {
+            int parent = parents[i];
+            children[parent].Add(i);
+        }  
+        return ;
+    }
+
+    public int getCountHelper(int start )
+    {
+        List<int> childrens = children[start];
+        int leftCount = 0, rightCount = 0;
+
+        if(childrens.Count > 0)
+        leftCount = getCountHelper(childrens[0] );
+
+        if(childrens.Count > 1)
+        rightCount = getCountHelper(childrens[1]);
+
+        long totalParentNodes = children.Length - ( leftCount + rightCount + 1);
+
+        long product = ( leftCount == 0 ? 1 : leftCount) * ( rightCount == 0 ? 1 : rightCount) * (totalParentNodes > 0 ? totalParentNodes : 1);
+
+        if( product > maxScore)
+        {
+            maxScore = product;
+            maxScoreNodes = 1;
+        }
+        else if(product == maxScore) maxScoreNodes++;
+        return leftCount + rightCount + 1;
+    }
+}
