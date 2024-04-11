@@ -14,15 +14,16 @@
 public class Solution {
     int maxMoves = 0;
     public int DistributeCoins(TreeNode root) {
-        helper( root);
+        DistributeCoinsHelper( root);
         return maxMoves;
     }
 
-    public int helper( TreeNode node )
+    // what is the total coins that this subtree either needs ?
+    public int DistributeCoinsHelper( TreeNode node )
     {
         if( node == null) return 0;
-        int L = helper(node.left);
-        int R = helper(node.right);
+        int L = DistributeCoinsHelper(node.left);
+        int R = DistributeCoinsHelper(node.right);
         maxMoves += Math.Abs(L) + Math.Abs(R);
         return node.val + L + R - 1;
     }
