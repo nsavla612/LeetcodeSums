@@ -1,0 +1,64 @@
+public class Solution {
+    public IList<IList<string>> SolveNQueens(int n) {
+        IList<IList<string>> result = new List<IList<string>>();
+        char[][] board= generateChessBoard(n);
+        NQueenHelper(result, new List<string>(), board, 0 , n);
+        return result;
+    }
+
+    public void NQueenHelper(IList<IList<string>> result, IList<string> distinctSolution, char[][] board, int row, int n)
+    {
+        if(row == n)
+        {
+            for(int r = 0 ; r < n; r++)
+            {
+                StringBuilder str = new StringBuilder();
+                for(int c = 0 ; c < n; c++)
+                {
+                    str.Append(board[r][c] + "");
+                }
+                distinctSolution.Add(str.ToString());
+            }
+
+            IList<string> temp = new List<string>(distinctSolution);
+            result.Add( temp);
+            distinctSolution.Clear();
+            return ;
+        }
+
+        for(int col = 0 ; col < n ; col++)
+        {
+            if(isValidPosition(board, row, col, n))
+            {
+                board[row][col] = 'Q';
+                NQueenHelper(result, distinctSolution, board, row + 1 , n);
+                board[row][col] = '.';
+            }
+        }
+    }
+
+    public  char[][] generateChessBoard(int n)
+    {
+        char[][] board= new char[n][];
+        for(int i = 0 ; i < n ; i ++)
+        {
+            board[i] = new char[n];
+            for(int j = 0 ; j < n ; j++)
+                board[i][j] = '.';
+        }
+        return board;
+    }
+
+    public bool isValidPosition(char[][] board, int row, int col, int n)
+    {
+        for(int i = 0 ; i < n ; i ++)
+        {
+            if(board[row][i] == 'Q' || board[i][col] == 'Q' ) return false;
+            if( row < n -i && col < n -i && board[row + i][col + i] == 'Q') return false;
+            if( row >= i && col >= i && board[row - i][col - i] == 'Q') return false;
+            if( row >= i && col < n -i && board[row - i][col + i] == 'Q') return false;
+            if( row < n -i && col >= i && board[row + i][col - i] == 'Q') return false;
+        }
+        return true;
+    }
+}
