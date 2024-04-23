@@ -1,0 +1,51 @@
+public class Solution {
+    int count = 0;
+    public int TotalNQueens(int n) {
+        char[][] board= generateChessBoard(n);
+        NQueenHelper( board, 0 , n);
+        return count;
+    }
+
+    public void NQueenHelper(char[][] board, int row, int n)
+    {
+        if(row == n)
+        {
+            count++; return ;
+        }
+
+        for(int col = 0 ; col < n ; col++)
+        {
+            if(isValidPosition(board, row, col, n))
+            {
+                board[row][col] = 'Q';
+                NQueenHelper(board, row + 1 , n);
+                board[row][col] = '.';
+            }
+        }
+    }
+
+    public  char[][] generateChessBoard(int n)
+    {
+        char[][] board= new char[n][];
+        for(int i = 0 ; i < n ; i ++)
+        {
+            board[i] = new char[n];
+            for(int j = 0 ; j < n ; j++)
+                board[i][j] = '.';
+        }
+        return board;
+    }
+
+    public bool isValidPosition(char[][] board, int row, int col, int n)
+    {
+        for(int i = 0 ; i < n ; i ++)
+        {
+            if(board[row][i] == 'Q' || board[i][col] == 'Q' ) return false;
+            if( row < n -i && col < n -i && board[row + i][col + i] == 'Q') return false;
+            if( row >= i && col >= i && board[row - i][col - i] == 'Q') return false;
+            if( row >= i && col < n -i && board[row - i][col + i] == 'Q') return false;
+            if( row < n -i && col >= i && board[row + i][col - i] == 'Q') return false;
+        }
+        return true;
+    }
+}
