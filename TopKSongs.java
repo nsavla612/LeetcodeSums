@@ -48,12 +48,13 @@ class TopSongs {
   }
 
   public void register_plays(String movie, int count) {
-      MovieNode tempMovieNode = MovieCounts.getOrDefault(movie, new MovieNode(movie, 0));
-      if(MovieCounts.containsKey(movie)) {
+     MovieNode tempMovieNode = MovieCounts.getOrDefault(movie, new MovieNode(movie, 0));
+     tempMovieNode.count += count;
+     MovieCounts.put(movie,tempMovieNode);
+    
+     if(MovieCounts.containsKey(movie)) {
           minHeap.remove(MovieCounts.get(movie));
       } 
-      tempMovieNode.count += count;
-      MovieCounts.put(movie,tempMovieNode);
       minHeap.add(tempMovieNode);
   
       if(minHeap.size() > this.capacity) {
